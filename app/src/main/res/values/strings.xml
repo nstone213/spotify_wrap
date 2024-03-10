@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Spotify Wrap</string>
+    <string name="host_name">auth</string>
+    <string name="scheme_name">spotify-sdk</string>
 </resources>
