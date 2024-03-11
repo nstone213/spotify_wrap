@@ -81,15 +81,15 @@ public class MainActivity extends AppCompatActivity {
         });
         shortBtn.setOnClickListener((v) -> {
             var = "short";
-            Toast.makeText(this, "Timeframe updated to last month!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Timeframe updated to last month!", Toast.LENGTH_SHORT).show();
         });
         mediumBtn.setOnClickListener((v) -> {
             var = "medium";
-            Toast.makeText(this, "Timeframe updated to last 6 months!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Timeframe updated to last 6 months!", Toast.LENGTH_SHORT).show();
         });
         longBtn.setOnClickListener((v) -> {
             var = "long";
-            Toast.makeText(this, "Timeframe updated to last several years!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Timeframe updated to last several years!", Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             mAccessCode = response.getCode();
             //setTextAsync(mAccessCode, codeTextView);
         }
-        Toast.makeText(this, "Successfully Connected!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Successfully Connected!", Toast.LENGTH_SHORT).show();
     }
 
     /**
