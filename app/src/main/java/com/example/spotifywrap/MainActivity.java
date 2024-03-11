@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                     // StringBuilder to store the artists and genres
                     StringBuilder relatedInfo = new StringBuilder();
 
-                    relatedInfo.append("YOUR 10 RECOMMENDED ARTISTS: " + "\n\n\n");
+                    relatedInfo.append("YOUR RECOMMENDED ARTISTS: " + "\n\n\n");
                     for (int i = 0; i < itemsA.length(); i++) {
                         if (counter == 10) {
                             break;
