@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".SignInActivity">
+    tools:context=".SignUpActivity">
 
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F1F1F1"
-        android:text="@string/sign_in"
+        android:text="@string/sign_up"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/black" />
 
@@ -33,14 +33,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/signInEmailTitle"
+            android:id="@+id/signUpEmailTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
-            android:id="@+id/signInEmailTextInput"
+            android:id="@+id/signUpEmailTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
@@ -50,14 +50,14 @@
             tools:targetApi="o" />
 
         <TextView
-            android:id="@+id/SignInPasswordTitle"
+            android:id="@+id/SignUpPasswordTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/password"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
-            android:id="@+id/signInPasswordTextInput"
+            android:id="@+id/signUpPasswordTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
@@ -66,30 +66,25 @@
             android:inputType="textPassword"
             tools:targetApi="o" />
 
-        <Button
-            android:id="@+id/signInButton"
+        <CheckBox
+            android:id="@+id/agreementCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in" />
+            android:text="@string/TandC" />
 
         <Button
-            android:id="@+id/forgotPasswordButton"
+            android:id="@+id/signUpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/forgot_password" />
+            android:text="@string/sign_up" />
 
         <TextView
-            android:id="@+id/signInErrorView"
+            android:id="@+id/signUpErrorView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/error_view" />
 
-        <Button
-            android:id="@+id/verifyEmailAgainButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email_verify_again" />
-
     </LinearLayout>
+
 
 </LinearLayout>
