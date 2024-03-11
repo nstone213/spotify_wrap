@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> favArtists = new ArrayList<>();
     private int counter = 0;
     private String var = "short";
+
+
+
+    // I have commented out the textviews for the token and code, as well as the get code button functionality and method.
+    // You can uncomment for debugging purposes.
+    //Make sure to sync with activity_main.xml
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the buttons
         Button tokenBtn = (Button) findViewById(R.id.connect_btn);
 //        Button codeBtn = (Button) findViewById(R.id.code_btn);
-        Button profileBtn = (Button) findViewById(R.id.summary_btn);
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
@@ -76,20 +81,20 @@ public class MainActivity extends AppCompatActivity {
 //            getCode();
 //        });
 
-        profileBtn.setOnClickListener((v) -> {
-            onGetUserProfileClicked();
-        });
         shortBtn.setOnClickListener((v) -> {
             var = "short";
-            Toast.makeText(this, "Timeframe updated to last month!", Toast.LENGTH_SHORT).show();
+            onGetUserProfileClicked();
+            Toast.makeText(this, "Last month's summary!", Toast.LENGTH_SHORT).show();
         });
         mediumBtn.setOnClickListener((v) -> {
             var = "medium";
-            Toast.makeText(this, "Timeframe updated to last 6 months!", Toast.LENGTH_SHORT).show();
+            onGetUserProfileClicked();
+            Toast.makeText(this, "Last 6 month's summary!", Toast.LENGTH_SHORT).show();
         });
         longBtn.setOnClickListener((v) -> {
             var = "long";
-            Toast.makeText(this, "Timeframe updated to last several years!", Toast.LENGTH_SHORT).show();
+            onGetUserProfileClicked();
+            Toast.makeText(this, "Last several years' summary!", Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -113,10 +118,10 @@ public class MainActivity extends AppCompatActivity {
      * What is code?
      * https://developer.spotify.com/documentation/general/guides/authorization-guide/
      */
-    public void getCode() {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_CODE_REQUEST_CODE, request);
-    }
+//    public void getCode() {
+//        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
+//        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_CODE_REQUEST_CODE, request);
+//    }
 
 
     /**
@@ -158,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
         // request for top artists
         final Request requestArtist = new Request.Builder()
-                //.url("https://api.spotify.com/v1/me/top/artists?")
                 .url("https://api.spotify.com/v1/me/top/artists?time_range=" + var + "_term&offset=0")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
@@ -219,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
 
         // request for top tracks
         final Request requestTrack = new Request.Builder()
-                //.url("https://api.spotify.com/v1/me/top/tracks?")
                 .url("https://api.spotify.com/v1/me/top/tracks?time_range=" + var + "_term&offset=0")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();

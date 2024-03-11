@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+<!--    // I have commented out the textviews for the token and code, as well as the get getcode button -->
+<!--    // You can uncomment for debugging purposes.-->
+<!--    //Make sure to sync with MainActivity.java-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Choose a Timeframe (Defaults to Last Month): "
+            android:text="Choose Your Summary: "
             android:textSize="16sp" />
 
         <LinearLayout
@@ -82,20 +87,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-
-            <Button
-                android:id="@+id/summary_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:text="Get Your Summary" />
-        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -109,25 +101,21 @@
                     android:id="@+id/profile_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Display of User Profile"
                     android:textSize="16sp" />
                 <TextView
                     android:id="@+id/artist_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Display of User Artists"
                     android:textSize="16sp" />
                 <TextView
                     android:id="@+id/track_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Display of User Songs"
                     android:textSize="16sp" />
                 <TextView
                     android:id="@+id/related_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Display of Recommended Artists"
                     android:textSize="16sp" />
             </LinearLayout>
         </ScrollView>
