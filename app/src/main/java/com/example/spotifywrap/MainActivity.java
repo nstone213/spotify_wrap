@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private Call mCall;
 
     private TextView tokenTextView, codeTextView, profileTextView, artistTextView, trackTextView,relatedTextView;
-    private ArrayList<String> relatedArtists = new ArrayList<>();
-    private int relindex = 0;
-
+    private String topArtist;
+    private ArrayList<String> favArtists = new ArrayList<>();
+    private int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,8 +164,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    setTextAsync(jsonObject.toString(3), profileTextView);
+                    final JSONObject userProfile = new JSONObject(response.body().string());
+
+                    StringBuilder userInfo = new StringBuilder();
+                    userInfo.append("YOUR SPOTIFY PROFILE: " + "\n\n\n");
+
+                    JSONArray imagesArray = userProfile.getJSONArray("images");
+                    String imageUrl = "";
+                    if (imagesArray.length() > 0) {
+                        imageUrl = imagesArray.getJSONObject(0).getString("url");
+                    }
+
+                    userInfo.append("Display Name: ").append(userProfile.getString("display_name")).append("\n");
+                    userInfo.append("Email: ").append(userProfile.getString("email")).append("\n");
+                    userInfo.append("Profile Picture: ").append(imageUrl).append("\n");
+                    userInfo.append("Spotify URL: ").append(userProfile.getString("external_urls")).append("\n\n");
+
+
+                    setTextAsync(userInfo.toString(), profileTextView);
                     getTopArtists(requestArtist);
 
 
@@ -212,13 +228,16 @@ public class MainActivity extends AppCompatActivity {
 
                     // StringBuilder to store the artists and genres
                     StringBuilder artistInfo = new StringBuilder();
+                    artistInfo.append("YOUR TOP 10 ARTISTS: " + "\n\n\n");
 
                     for (int i = 0; i < Math.min(itemsArray.length(), 10); i++) {
                         JSONObject artistObject = itemsArray.getJSONObject(i);
                         String artistName = artistObject.getString("name");
-
-                        //get artist id
-                        relatedArtists.add(artistObject.getString("id"));
+                        favArtists.add(artistName);
+                        //get top artist id
+                        if(i == 0) {
+                            topArtist = artistObject.getString("id");
+                        }
 
                         // Extract genres
                         JSONArray genresArray = artistObject.getJSONArray("genres");
@@ -267,11 +286,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // request for related artists
-//        final Request requestRelArtists = new Request.Builder()
-//                .url("https://api.spotify.com/v1/artists/" + relatedArtists.get(relindex) + "/related-artists")
-//                .addHeader("Authorization", "Bearer " + mAccessToken)
-//                .build();
-//        relindex++;
+        final Request requestRelArtists = new Request.Builder()
+                .url("https://api.spotify.com/v1/artists/" + topArtist + "/related-artists")
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
         cancelCall();
         mCall = mOkHttpClient.newCall(request);
 
@@ -290,9 +308,9 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(responseData);
                     JSONArray items = jsonObject.getJSONArray("items");
 
-                    // StringBuilder to store the artists and genres
+                    // StringBuilder to store the artists and songs
                     StringBuilder trackInfo = new StringBuilder();
-
+                    trackInfo.append("YOUR TOP 10 SONGS: " + "\n\n\n");
                     for (int i = 0; i < Math.min(items.length(), 10); i++) {
                         JSONObject track = items.getJSONObject(i);
 
@@ -316,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
                         String previewUrl = track.getString("preview_url");
 
-                        // Append artist,images and genres to the StringBuilder
+                        // Append artist,images, name, preview to the StringBuilder
                         trackInfo.append("Song Name: ").append(trackName).append("\n");
                         trackInfo.append("Artist(s): ").append(artists).append("\n");
                         trackInfo.append("Image URL: " + "\n").append(coverImage).append("\n");
@@ -325,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Update the UI with the fetched artist information
                     setTextAsync(trackInfo.toString(), trackTextView);
-//                    getRelatedArtists(requestRelArtists);
+                    getRelatedArtists(requestRelArtists);
 
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
@@ -336,85 +354,80 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    public void getRelatedArtists(Request request) {
-//
-//
-//        // request for related artists if exsist
-//
-//        if(relindex < relatedArtists.size()) {
-//            final Request requestRelArtists = new Request.Builder()
-//                    .url("https://api.spotify.com/v1/artists/" + relatedArtists.get(relindex) + "/related-artists")
-//                    .addHeader("Authorization", "Bearer " + mAccessToken)
-//                    .build();
-//            relindex++;
-//        }
-//
-//        cancelCall();
-//        mCall = mOkHttpClient.newCall(request);
-//
-//        mCall.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("HTTP", "Failed to fetch data: " + e);
-//                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                try {
-//                    String responseData = response.body().string();
-//                    JSONObject jsonObject = new JSONObject(responseData);
-//                    JSONArray itemsArray = jsonObject.getJSONArray("items");
-//
-//                    // StringBuilder to store the artists and genres
-//                    StringBuilder artistInfo = new StringBuilder();
-//
-//                    for (int i = 0; i < Math.min(itemsArray.length(), 10); i++) {
-//                        JSONObject artistObject = itemsArray.getJSONObject(i);
-//                        String artistName = artistObject.getString("name");
-//
-//
-//                        // Extract genres
-//                        JSONArray genresArray = artistObject.getJSONArray("genres");
-//                        StringBuilder genres = new StringBuilder();
-//                        for (int j = 0; j < genresArray.length(); j++) {
-//                            genres.append(genresArray.getString(j));
-//                            if (j < genresArray.length() - 1) {
-//                                genres.append(", ");
-//                            }
-//                        }
-//
-//                        // Extract images
-//                        JSONArray imagesArray = artistObject.getJSONArray("images");
-//                        String imageUrl = "";
-//                        if (imagesArray.length() > 0) {
-//                            imageUrl = imagesArray.getJSONObject(0).getString("url");
-//                        }
-//
-//                        // Append artist,images and genres to the StringBuilder
-//                        artistInfo.append("Recommended Artist: ").append(artistName).append("\n");
-//                        if(genres.length() == 0) {
-//                            artistInfo.append("Genres: Not Available ").append("\n");
-//                        } else{
-//                            artistInfo.append("Genres: ").append(genres).append("\n");
-//                        }
-//                        artistInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
-//                    }
-//
-//                    // Update the UI with the fetched artist information
-//                    setTextAsync(artistInfo.toString(), relatedTextView);
-//                    if(relindex < relatedArtists.size()) {
-//                        getRelatedArtists(requestRelArtists);
-//                    }
-//                } catch (JSONException e) {
-//                    Log.d("JSON", "Failed to parse data: " + e);
-//                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
+    public void getRelatedArtists(Request request) {
+
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(request);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("HTTP", "Failed to fetch data: " + e);
+                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String responseData = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseData);
+                    JSONArray itemsA = jsonObject.getJSONArray("artists");
+
+                    // StringBuilder to store the artists and genres
+                    StringBuilder relatedInfo = new StringBuilder();
+
+                    relatedInfo.append("YOUR 10 RECOMMENDED ARTISTS: " + "\n\n\n");
+                    for (int i = 0; i < itemsA.length(); i++) {
+                        if (counter == 10) {
+                            break;
+                        }
+                        JSONObject artistObject = itemsA.getJSONObject(i);
+                        String artistName = artistObject.getString("name");
+
+
+                        // Extract genres
+                        JSONArray genresArray = artistObject.getJSONArray("genres");
+                        StringBuilder genres = new StringBuilder();
+                        for (int j = 0; j < genresArray.length(); j++) {
+                            genres.append(genresArray.getString(j));
+                            if (j < genresArray.length() - 1) {
+                                genres.append(", ");
+                            }
+                        }
+
+                        // Extract images
+                        JSONArray imagesArray = artistObject.getJSONArray("images");
+                        String imageUrl = "";
+                        if (imagesArray.length() > 0) {
+                            imageUrl = imagesArray.getJSONObject(0).getString("url");
+                        }
+
+                        // Append artist,images and genres to the StringBuilder if not already a top artist
+                        if(!favArtists.contains(artistName)) {
+                            relatedInfo.append("Recommended Artist: ").append(artistName).append("\n");
+                            if(genres.length() == 0) {
+                                relatedInfo.append("Genres: Not Available ").append("\n");
+                            } else{
+                                relatedInfo.append("Genres: ").append(genres).append("\n");
+                            }
+                            relatedInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
+
+                            counter++;
+                        }
+                    }
+
+                    // Update the UI with the fetched artist information
+                    setTextAsync(relatedInfo.toString(), relatedTextView);
+                } catch (JSONException e) {
+                    Log.d("JSON", "Failed to parse data: " + e);
+                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 
 
