@@ -12,54 +12,87 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/token_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            tools:text="Token:" />
+<!--        <TextView-->
+<!--            android:id="@+id/token_text_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="8dp"-->
+<!--            tools:text="Token:" />-->
 
         <Button
-            android:id="@+id/token_btn"
+            android:id="@+id/connect_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Request Token" />
+            android:text="Connect with Spotify" />
 
-        <TextView
-            android:id="@+id/code_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            tools:text="Code:" />
+<!--        <TextView-->
+<!--            android:id="@+id/code_text_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="8dp"-->
+<!--            tools:text="Code:" />-->
 
-        <Button
-            android:id="@+id/code_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Request Code" />
+<!--        <Button-->
+<!--            android:id="@+id/code_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="8dp"-->
+<!--            android:text="Request Code" />-->
 
-        <TextView
-            android:id="@+id/response_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            tools:text="Line 1\nLine 2\nLine 3" />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/profile_btn"
+                android:id="@+id/summary_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:text="Get User Profile" />
+                android:text="Get Your Summary" />
         </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/profile_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Display of User Profile"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/artist_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Display of User Artists"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/track_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Display of User Songs"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/related_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Display of Recommended Artists"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </ScrollView>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
