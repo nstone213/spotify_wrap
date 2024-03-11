@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String topArtist;
     private ArrayList<String> favArtists = new ArrayList<>();
     private int counter = 0;
+    private String var = "short";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         Button tokenBtn = (Button) findViewById(R.id.connect_btn);
 //        Button codeBtn = (Button) findViewById(R.id.code_btn);
         Button profileBtn = (Button) findViewById(R.id.summary_btn);
+        Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
+        Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
+        Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
 
         // Set the click listeners for the buttons
 
@@ -74,6 +78,18 @@ public class MainActivity extends AppCompatActivity {
 
         profileBtn.setOnClickListener((v) -> {
             onGetUserProfileClicked();
+        });
+        shortBtn.setOnClickListener((v) -> {
+            var = "short";
+            Toast.makeText(this, "Timeframe updated to last month!", Toast.LENGTH_LONG).show();
+        });
+        mediumBtn.setOnClickListener((v) -> {
+            var = "medium";
+            Toast.makeText(this, "Timeframe updated to last 6 months!", Toast.LENGTH_LONG).show();
+        });
+        longBtn.setOnClickListener((v) -> {
+            var = "long";
+            Toast.makeText(this, "Timeframe updated to last several years!", Toast.LENGTH_LONG).show();
         });
 
     }
@@ -143,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         // request for top artists
         final Request requestArtist = new Request.Builder()
                 //.url("https://api.spotify.com/v1/me/top/artists?")
-                .url("https://api.spotify.com/v1/me/top/artists?time_range=short_term&offset=0")
+                .url("https://api.spotify.com/v1/me/top/artists?time_range=" + var + "_term&offset=0")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
@@ -204,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         // request for top tracks
         final Request requestTrack = new Request.Builder()
                 //.url("https://api.spotify.com/v1/me/top/tracks?")
-                .url("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&offset=0")
+                .url("https://api.spotify.com/v1/me/top/tracks?time_range=" + var + "_term&offset=0")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
@@ -420,6 +436,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Update the UI with the fetched artist information
                     setTextAsync(relatedInfo.toString(), relatedTextView);
+                    counter = 0;
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
