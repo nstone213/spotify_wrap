@@ -25,6 +25,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private Call mCall;
 
     private TextView tokenTextView, codeTextView, profileTextView, artistTextView, trackTextView,relatedTextView;
-    private String topArtist;
+    private String recArtist;
     private ArrayList<String> favArtists = new ArrayList<>();
-    private int counter = 0;
     private String var = "short";
 
 
@@ -244,19 +246,26 @@ public class MainActivity extends AppCompatActivity {
                     String responseData = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseData);
                     JSONArray itemsArray = jsonObject.getJSONArray("items");
+                    int r = (int) (Math.random() * (itemsArray.length() - 1));
 
                     // StringBuilder to store the artists and genres
                     StringBuilder artistInfo = new StringBuilder();
                     artistInfo.append("YOUR TOP 10 ARTISTS: " + "\n\n\n");
 
+
+                    for (int j = 0; j < itemsArray.length(); j++) {
+                        JSONObject artistObject = itemsArray.getJSONObject(j);
+                        if(j == r) {
+                            recArtist = artistObject.getString("id");
+                        }
+                    }
+
                     for (int i = 0; i < Math.min(itemsArray.length(), 10); i++) {
                         JSONObject artistObject = itemsArray.getJSONObject(i);
                         String artistName = artistObject.getString("name");
-                        favArtists.add(artistName);
+
                         //get top artist id
-                        if(i == 0) {
-                            topArtist = artistObject.getString("id");
-                        }
+                        favArtists.add(artistObject.getString("id"));
 
                         // Extract genres
                         JSONArray genresArray = artistObject.getJSONArray("genres");
@@ -306,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
         // request for related artists
         final Request requestRelArtists = new Request.Builder()
-                .url("https://api.spotify.com/v1/artists/" + topArtist + "/related-artists")
+                .url("https://api.spotify.com/v1/artists/" + recArtist + "/related-artists")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
         cancelCall();
@@ -394,16 +403,22 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(responseData);
                     JSONArray itemsA = jsonObject.getJSONArray("artists");
 
+                    //pick up to 5 random related artists to recommend
+                    Set<Integer> pick = new HashSet<>();
+                    Random random = new Random();
+                    while(pick.size() < Math.min(5, itemsA.length())) {
+                        int randomNumber = random.nextInt(itemsA.length());
+                        pick.add(randomNumber);
+                    }
+
                     // StringBuilder to store the artists and genres
                     StringBuilder relatedInfo = new StringBuilder();
 
                     relatedInfo.append("YOUR RECOMMENDED ARTISTS: " + "\n\n\n");
                     for (int i = 0; i < itemsA.length(); i++) {
-                        if (counter == 10) {
-                            break;
-                        }
                         JSONObject artistObject = itemsA.getJSONObject(i);
                         String artistName = artistObject.getString("name");
+                        String artistId = artistObject.getString("id");
 
 
                         // Extract genres
@@ -423,8 +438,8 @@ public class MainActivity extends AppCompatActivity {
                             imageUrl = imagesArray.getJSONObject(0).getString("url");
                         }
 
-                        // Append artist,images and genres to the StringBuilder if not already a top artist
-                        if(!favArtists.contains(artistName)) {
+                        // Append artist,images and genres to the StringBuilder if not already a top artist and is picked
+                        if(!favArtists.contains(artistId) && pick.contains(i)) {
                             relatedInfo.append("Recommended Artist: ").append(artistName).append("\n");
                             if(genres.length() == 0) {
                                 relatedInfo.append("Genres: Not Available ").append("\n");
@@ -433,13 +448,12 @@ public class MainActivity extends AppCompatActivity {
                             }
                             relatedInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
 
-                            counter++;
                         }
                     }
 
                     // Update the UI with the fetched artist information
                     setTextAsync(relatedInfo.toString(), relatedTextView);
-                    counter = 0;
+                    favArtists = new ArrayList<>();
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
