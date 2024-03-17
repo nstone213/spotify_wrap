@@ -13,6 +13,16 @@
         android:theme="@style/Theme.SpotifyWrap"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_email_password"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
             android:name=".WelcomeActivity"
             android:exported="false"
             android:label="@string/title_activity_welcome"
@@ -31,16 +41,6 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false"
             android:label="@string/title_activity_forgot_password"
-            android:theme="@style/Theme.SpotifyWrap" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.SpotifyWrap" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false"
-            android:label="@string/title_activity_email_password"
             android:theme="@style/Theme.SpotifyWrap" />
         <activity
             android:name=".MainActivity"
