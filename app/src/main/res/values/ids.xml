@@ -5,4 +5,6 @@
     <item name="etRegPass" type="id" />
     <item name="btnRegister" type="id" />
     <item name="tvLoginHere" type="id" />
+    <item name="etResetEmail" type="id"/>
+    <item name="btnReset" type="id"/>
 </resources>
